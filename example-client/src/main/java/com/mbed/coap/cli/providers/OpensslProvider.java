@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -58,7 +59,7 @@ public class OpensslProvider extends TransportProvider {
     }
 
     private static File keyPairToTempFile(String alias, KeyStore ks) throws KeyStoreException, IOException, CertificateEncodingException, NoSuchAlgorithmException, UnrecoverableKeyException {
-        File temp = File.createTempFile("client", ".pem");
+        File temp = Files.createTempFile("client", ".pem").toFile();
         try (FileWriter writer = new FileWriter(temp)) {
             writer.write("-----BEGIN CERTIFICATE-----\n");
             writer.write(Base64.getEncoder().encodeToString(ks.getCertificate(alias).getEncoded()));
